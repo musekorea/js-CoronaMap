@@ -31,6 +31,9 @@ const data = [
   },
 ];
 
+let markerList = [];
+let infoWindowList = [];
+
 let map = new naver.maps.Map('map', {
   center: new naver.maps.LatLng(
     data[data.length - 1].lat,
@@ -40,8 +43,29 @@ let map = new naver.maps.Map('map', {
 });
 
 for (let i = 0; i < data.length; i++) {
+  let target = data[i];
+
   let marker = new naver.maps.Marker({
     map: map,
     position: new naver.maps.LatLng(data[i].lat, data[i].lng),
+    icon: {
+      content: `<div class="marker"></div>`,
+      anchor: new naver.maps.Point(7.5, 7.5),
+    },
   });
+  const content = `
+    <div class="infowindow_wrap>
+      <div class="infowindow_title">${target.title}</div>
+      <div class="infowindow_address">${target.address}</div>
+    <div>`;
+
+  const infoWindow = new naver.maps.InfoWindow({
+    content: content,
+    backgroundColor: 'green',
+    borderColor: 'black',
+    anchorSize: new naver.maps.Size(0, 0),
+  });
+
+  markerList.push(marker);
+  infoWindowList.push(infoWindow);
 }
