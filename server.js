@@ -8,6 +8,6 @@ app.set('views', __dirname + '/views');
 
 app.use('/', router);
 app.use('/upload', router);
-app.listen(8081, () => {
+app.listen(8080, () => {
   console.log(`💚 Server is listening on Port 8080 `);
 });

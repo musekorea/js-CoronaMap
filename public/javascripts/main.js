@@ -68,4 +68,18 @@ for (let i = 0; i < data.length; i++) {
 
   markerList.push(marker);
   infoWindowList.push(infoWindow);
+  console.log(markerList, infoWindowList);
+}
+
+for (let i = 0; i < markerList.length; i++) {
+  naver.maps.Event.addListener(markerList[i], 'click', (e) => {
+    console.log(i);
+    const selectedMarker = markerList[i];
+    const selectedInfoWindow = infoWindowList[i];
+    if (selectedInfoWindow.getMap()) {
+      selectedInfoWindow.close();
+    } else {
+      selectedInfoWindow.open(map, selectedMarker);
+    }
+  });
 }
