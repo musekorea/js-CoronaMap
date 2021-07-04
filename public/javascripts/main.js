@@ -54,16 +54,16 @@ for (let i = 0; i < data.length; i++) {
     },
   });
   const content = `
-    <div class="infowindow_wrap>
-      <div class="infowindow_title">${target.title}</div>
-      <div class="infowindow_address">${target.address}</div>
+    <div class="infoWindow_wrap">
+      <div class="infoWindow_title">${target.title}</div>
+      <div class="infoWindow_address">${target.address}</div>
     <div>`;
 
   const infoWindow = new naver.maps.InfoWindow({
     content: content,
     backgroundColor: 'green',
     borderColor: 'black',
-    anchorSize: new naver.maps.Size(0, 0),
+    anchorSize: new naver.maps.Size(0, 10),
   });
 
   markerList.push(marker);
@@ -81,5 +81,8 @@ for (let i = 0; i < markerList.length; i++) {
     } else {
       selectedInfoWindow.open(map, selectedMarker);
     }
+  });
+  naver.maps.Event.addListener(map, 'click', (e) => {
+    infoWindowList[i].close();
   });
 }
