@@ -1,5 +1,9 @@
+import 'dotenv/config';
+import './db.js';
+import './models/location.js';
 import express from 'express';
 import router from './src/routes/router.js';
+
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
