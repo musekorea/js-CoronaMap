@@ -4,18 +4,49 @@ const mapOptions = {
   level: 3,
 };
 let map = new kakao.maps.Map(mapContainer, mapOptions);
-
 let infoWindow = new kakao.maps.InfoWindow({
   zIndex: 1,
 });
-
+let places = new kakao.maps.services.Places();
 let markerList = [];
 
-let places = new kakao.maps.services.Places();
+function makeList(result) {
+  const placesList = document.querySelector('#placesList');
+  //let bounds = new kakao.maps.LatLngBounds();
+  for (let i = 1; i < result.length; i++) {
+    let lat = result[i].y;
+    let lng = result[i].x;
+    let address = result[i].address_name;
+    let placeName = result[i].place_name;
+    const placePosition = new kakao.maps.LatLng(lat, lng);
+    //bounds.extend(placePosition);
+
+    let marker = new kakao.maps.Marker({
+      position: placePosition,
+    });
+    marker.setMap(map);
+    markerList.push(marker);
+    console.log(markerList);
+
+    const listDiv = document.createElement('div');
+    listDiv.className = 'item';
+    listDiv.innerHTML = `
+      <div class="info">
+        <div class="infoTitle">
+          ${placeName}
+        </div>
+        <span>${address}</span>
+      </div>
+      <hr>
+      `;
+
+    placesList.appendChild(listDiv);
+  }
+}
 
 function palcesSearchCallback(result, status) {
   if (status === kakao.maps.services.Status.OK) {
-    console.log(result);
+    makeList(result);
   } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
     alert(`검색 결과가 존재하지 않습니다`);
     return;
