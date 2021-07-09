@@ -33,26 +33,30 @@ function removeList() {
 function removeMarker() {
   for (let i = 0; i < markerList.length; i++) {
     markerList[i].setMap(null);
+    console.log(markerList[i]);
   }
+  markerList = [];
 }
 
-//==================LIST============================================
+//==================MAKE LIST========================================
 function makeList(result) {
-  //let bounds = new kakao.maps.LatLngBounds();
-
   for (let i = 1; i < result.length; i++) {
     let lat = result[i].y;
     let lng = result[i].x;
     let address = result[i].address_name;
     let placeName = result[i].place_name;
     const placePosition = new kakao.maps.LatLng(lat, lng);
-    //bounds.extend(placePosition);
 
     let marker = new kakao.maps.Marker({
       position: placePosition,
     });
     marker.setMap(map);
     markerList.push(marker);
+
+    let bounds = new kakao.maps.LatLngBounds();
+    //bounds.extend(new kakao.maps.LatLng(lat, lng));
+    bounds.extend(placePosition);
+    map.setBounds(bounds);
 
     const listDiv = document.createElement('div');
     listDiv.className = 'item';
@@ -75,6 +79,11 @@ function makeList(result) {
     kakao.maps.event.addListener(map, 'click', () => {
       infoWindow.close();
     });
+
+    listDiv.addEventListener('click', (e) => {
+      infoWindow.close();
+      paintInfoWindow(marker, placeName, address, lat, lng);
+    });
   }
 }
 //===========INFO WINDOW=========================================
@@ -92,6 +101,9 @@ function paintInfoWindow(marker, placeName, address, lat, lng) {
   });
 
   infoWindow.open(map, marker);
+  const movePan = new kakao.maps.LatLng(lat, lng);
+  map.panTo(movePan);
+  //map.panTo(marker.getPosition());
 }
 
 //==========================BUTTON=================================
