@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import './db.js';
-import './models/location.js';
+import LocationModel from './models/location';
+//import './models/location.js';
 import express from 'express';
 import router from './src/routes/router.js';
 
@@ -13,6 +14,22 @@ app.set('views', __dirname + '/views');
 
 app.use('/', router);
 app.use('/upload', router);
+
+//========================DB===========================
+
+router.post('/location', async (req, res, next) => {
+  const { title, address, lat, lng } = req.body;
+  try {
+    let location = await new LocationModel({ title, address, lat, lng });
+    await location.save();
+    console.log(location);
+    res.json({ message: `success` });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: `error` });
+  }
+});
+
 //==============TEST CODE==============================
 router
   .route('/test')

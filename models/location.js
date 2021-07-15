@@ -7,5 +7,5 @@ const locationSchema = mongoose.Schema({
   lng: { type: Number, required: true },
 });
 
-const Location = mongoose.model('Location', locationSchema);
-export default Location;
+const LocationModel = mongoose.model('Location', locationSchema);
+export default LocationModel;
