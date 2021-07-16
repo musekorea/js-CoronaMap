@@ -18,9 +18,9 @@ app.use('/upload', router);
 //========================DB===========================
 
 router.post('/location', async (req, res, next) => {
-  const { title, address, lat, lng } = req.body;
+  const { placeName, address, lat, lng } = req.body;
   try {
-    let location = await new LocationModel({ title, address, lat, lng });
+    let location = await new LocationModel({ placeName, address, lat, lng });
     await location.save();
     console.log(location);
     res.json({ message: `success` });

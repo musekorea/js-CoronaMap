@@ -95,7 +95,7 @@ function paintInfoWindow(marker, placeName, address, lat, lng) {
       <div class="infoWindow">
         ${placeName}<br>
         ${address}<br>
-        <button>등록</button>
+        <button >등록</button>
       </div>`,
     zIndex: 1,
   });
@@ -104,9 +104,28 @@ function paintInfoWindow(marker, placeName, address, lat, lng) {
   const movePan = new kakao.maps.LatLng(lat, lng);
   map.panTo(movePan);
   //map.panTo(marker.getPosition());
+  infoUpload(placeName, address, lat, lng);
 }
 
-//==========================BUTTON=================================
+//=============info Upload==========================
+function infoUpload(placeName, address, lat, lng) {
+  const infoDIV = document.querySelector('.infoWindow');
+  const button = infoDIV.querySelector('button');
+  button.addEventListener('click', async (e) => {
+    const upload = await fetch(`/location`, {
+      method: 'post',
+      body: JSON.stringify({
+        placeName,
+        address,
+        lat,
+        lng,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  });
+}
+
+//================SEARCH BUTTON=================================
 const searchForm = document.querySelector('#searchForm');
 let keyword = document.querySelector('#keyword');
 searchForm.addEventListener('submit', (e) => {
