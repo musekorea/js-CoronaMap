@@ -1,5 +1,3 @@
-import Location from '../../models/location';
-
 export const rootController = async (req, res) => {
   console.log(req.path);
   res.render('index');

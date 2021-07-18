@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import './db.js';
 import LocationModel from './models/location';
-//import './models/location.js';
 import express from 'express';
 import router from './src/routes/router.js';
 
@@ -30,6 +29,22 @@ router.post('/location', async (req, res, next) => {
   }
 });
 
+router.get('/location', async (req, res, next) => {
+  try {
+    const locationData = await LocationModel.find(
+      {},
+      {
+        _id: 0,
+        __v: 0,
+      }
+    );
+    res.json({ message: 'success', data: locationData });
+  } catch (error) {
+    console.log(error);
+    res.json({ message: `error` });
+  }
+});
+
 //==============TEST CODE==============================
 router
   .route('/test')
@@ -43,6 +58,7 @@ router
     res.json({ message: `Post Test OK` });
   });
 
+//================Server On==============================
 app.listen(8080, () => {
   console.log(`💚 Server is listening on Port 8080 `);
 });
