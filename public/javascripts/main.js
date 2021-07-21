@@ -14,7 +14,6 @@ async function getData() {
 
   const dataJSON = await fetchData.json();
   const data = dataJSON.data;
-  console.log(`location data=`, data);
 
   let map = new naver.maps.Map('map', {
     center: new naver.maps.LatLng(
@@ -50,12 +49,10 @@ async function getData() {
 
     markerList.push(marker);
     infoWindowList.push(infoWindow);
-    console.log(markerList, infoWindowList);
   }
 
   for (let i = 0; i < markerList.length; i++) {
     naver.maps.Event.addListener(markerList[i], 'click', (e) => {
-      console.log(i);
       const selectedMarker = markerList[i];
       const selectedInfoWindow = infoWindowList[i];
       if (selectedInfoWindow.getMap()) {
@@ -68,6 +65,83 @@ async function getData() {
       infoWindowList[i].close();
     });
   }
-}
+  //===========CLUSTER=====================================
+  const cluster1 = {
+    content: `<div class="cluster cluster1"></div>`,
+  };
+  const cluster2 = {
+    content: `<div class="cluster cluster2"></div>`,
+  };
+  const cluster3 = {
+    content: `<div class="cluster cluster3"></div>`,
+  };
 
+  const markerClustering = new MarkerClustering({
+    minClusterSize: 2,
+    maxZoom: 12,
+    map: map,
+    markers: markerList,
+    disableClickZoom: false,
+    gridSize: 20,
+    icons: [cluster1, cluster2, cluster3],
+    indexGenerator: [2, 5, 10],
+    stylingFunction: (clusterMarker, count) => {
+      //console.log(clusterMarker._wrapper.firstChild);
+      clusterMarker._wrapper.firstChild;
+      clusterMarker._wrapper.firstChild.textContent = `${count}`;
+    },
+  });
+}
 getData();
+
+//================아래는 행정구역 나누기 실패~ =============================
+
+/* const urlPrefix = `https://navermaps.github.io/maps.js/docs/data/region`;
+const urlSuffix = `.json`;
+
+let regionGeoJson = [];
+let loadCount = 0;
+
+naver.maps.Event.once(map, 'init_stylemap', async () => {
+  for (let i = 1; i > 18; i++) {
+    let keyword = i.toString();
+    if (keyword.length === 1) {
+      keyword = `0${keyword}`;
+    }
+    const regionData = await fetch(urlPrefix + keyword + urlSuffix.toString,{
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    regionGeoJson.push(regionData);
+    await loadCount++;
+    console.log(i)
+    if (loadCount === 17) {
+      return startDataLayer();
+    }
+  }
+});
+
+function startDataLayer() {
+  map.data.setStyle((feature)  =>  {
+    const styleOptions = {
+      fillColor = `red`,
+      fillOpacity = 0.0001,
+      strokeColor = `red`,
+      strokeWeight:2,
+      strokeOpacity:0.4,
+    };
+    if(feature.getProperty("focus")){
+      styleOptions.fillColor = `green`,
+      styleOptions.fillOpacity=0.6,
+      styleOptions.strokeColor = `green`,
+      styleOptions.strokeWeight=4,
+      styleOptions.strokeOpacity=1
+    }
+    return styleOptions;
+  });
+
+  regionGeoJson.forEach(geojson=>{
+    map.data.addGeoJson(geojson)
+  })
+}
+ */
