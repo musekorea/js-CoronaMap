@@ -5,7 +5,7 @@
 Check Box <br>
 
 - [ ] 운동 하기
-- [ ] What 
+- [x] What 
 
 > he said 
 >> what is this
