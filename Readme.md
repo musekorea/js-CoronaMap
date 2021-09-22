@@ -4,7 +4,7 @@
 ---
 Check Box <br>
 
-- [x]first
+- [ ] 운동 하기
 - [ ]second
 
 > he said 
